@@ -207,3 +207,5 @@ pyrightconfig.json
 
 # pytorch model
 *.pth
+
+data
