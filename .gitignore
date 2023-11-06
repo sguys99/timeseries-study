@@ -208,4 +208,5 @@ pyrightconfig.json
 # pytorch model
 *.pth
 
-data
+**/data/
+__pycache__/
