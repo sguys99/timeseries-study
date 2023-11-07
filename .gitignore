@@ -210,3 +210,7 @@ pyrightconfig.json
 
 **/data/
 __pycache__/
+
+**/ts_logs
+**/ts_models
+**/models
