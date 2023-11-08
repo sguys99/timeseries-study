@@ -55,3 +55,37 @@ def df_to_np(df):
     arr = np.array(df)
     arr = pad_arr(arr)
     return arr
+
+
+class Dataset(torch.utils.data.Dataset):
+    def __init__(self, groups, grp_by, split, features, target):
+        self.groups = groups
+        self.grp_by = grp_by
+        self.split = split
+        self.features = features
+        self.target = target
+
+    def __len__(self):
+        return len(self.groups)
+
+    def __getitem__(self, idx):
+        group = self.groups[idx]
+
+        df = self.grp_by.get_group(group)
+
+        src, trg = split_df(df, split=self.split)
+
+        src = src[self.features + [self.target]]
+
+        src = df_to_np(src)
+
+        trg_in = trg[self.features + [f"{self.target}_lag_1"]]
+
+        trg_in = np.array(trg_in)
+        trg_out = np.array(trg[self.target])
+
+        src = torch.tensor(src, dtype=torch.float)
+        trg_in = torch.tensor(trg_in, dtype=torch.float)
+        trg_out = torch.tensor(trg_out, dtype=torch.float)
+
+        return src, trg_in, trg_out
